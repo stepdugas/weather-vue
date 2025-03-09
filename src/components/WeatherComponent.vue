@@ -150,25 +150,56 @@ export default {
   display: inline-block;
 }
 
-/* 🔹 Forecast Section */
 .forecast-container {
-  margin-top: 20px;
+  display: flex;
+  justify-content: center;  /* Center horizontally */
+  align-items: center;  /* Keep vertically aligned */
+  flex-direction: column;
+  text-align: center;
+  width: 100%;
+  max-width: 800px;  /* Ensures it doesn’t stretch too wide */
+  margin: 20px auto;  /* Centers the container */
 }
 
 .forecast-grid {
   display: flex;
-  justify-content: center;
+  justify-content: center;  /* Keep items centered */
   flex-wrap: wrap;
+  gap: 15px;  /* Space between cards */
+  width: 100%;
+  max-width: 700px;  /* Ensures grid stays balanced */
+  margin: 0 auto;  /* Centers the grid */
 }
 
 .forecast-card {
   background: rgba(255, 255, 255, 0.1);
   padding: 10px;
-  margin: 10px;
   border-radius: 8px;
   text-align: center;
   min-width: 120px;
+  max-width: 150px;
 }
+
+/* 🔹 Ensure Everything Stays Centered on Large Screens */
+@media (min-width: 1024px) {
+  .weather-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* Forces everything to center */
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+  }
+
+  .forecast-container {
+    max-width: 1000px;  /* Adjust max width for large screens */
+  }
+
+  .forecast-grid {
+    max-width: 900px;
+  }
+}
+
 
 /* 🔹 Button Styles */
 button {
