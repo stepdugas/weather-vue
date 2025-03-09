@@ -1,49 +1,30 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { onMounted } from 'vue';
 
-// Dark mode state
-const darkMode = ref(JSON.parse(localStorage.getItem("darkMode")) || false);
-
-const toggleDarkMode = () => {
-  darkMode.value = !darkMode.value;
-  localStorage.setItem("darkMode", JSON.stringify(darkMode.value));
-
-  // Apply dark or light mode globally
-  document.documentElement.classList.toggle("dark-mode", darkMode.value);
-  document.documentElement.classList.toggle("light-mode", !darkMode.value);
-};
-
-// Ensure mode persists on reload
+// Ensure dark mode is set when the app loads
 onMounted(() => {
-  if (darkMode.value) {
-    document.documentElement.classList.add("dark-mode");
-  } else {
-    document.documentElement.classList.add("light-mode");
-  }
+  document.documentElement.classList.add("dark-mode");
 });
 </script>
 
 <template>
   <div class="app-container">
-    <!-- Background Animation -->
+    <!-- Animated Background -->
     <div class="animated-background"></div>
 
     <!-- Header -->
     <header class="app-header">
       <h1>WeatherVue</h1>
       <p>Get real-time weather updates</p>
-      <button @click="toggleDarkMode">
-        {{ darkMode ? "☀️ Light Mode" : "🌙 Dark Mode" }}
-      </button>
     </header>
 
-    <!-- Main Content -->
-    <main>
+    <!-- Main Content (Expands between header & footer) -->
+    <main class="app-content">
       <RouterView />
     </main>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="app-footer">
       <p>© 2025 WeatherVue | Built by Stephanie Dugas</p>
       <nav>
         <a href="https://www.linkedin.com/in/stephanie-dugas" target="_blank">LinkedIn</a>
@@ -55,7 +36,71 @@ onMounted(() => {
 </template>
 
 <style>
-/* 🔹 Animated Background */
+/* 🔹 Full Page Layout */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  background: #121212;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 🔹 App Container */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* 🔹 Header (Fixed at Top) */
+.app-header {
+  width: 100%;
+  text-align: center;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+/* 🔹 Main Content (Takes Up Remaining Space) */
+.app-content {
+  flex-grow: 1;
+  padding: 80px 20px;
+  margin-top: 80px;
+  margin-bottom: 60px;
+  overflow-y: auto;
+}
+
+/* 🔹 Footer (Fixed at Bottom) */
+.app-footer {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  text-align: center;
+  padding: 15px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+}
+
+/* 🔹 Footer Links */
+.app-footer a {
+  color: white;
+  text-decoration: none;
+  margin: 0 15px;
+  transition: color 0.3s;
+}
+
+.app-footer a:hover {
+  color: #1db7ff;
+}
+
+/* 🔹 Background - Proper Dark Gradient */
 .animated-background {
   position: fixed;
   width: 100vw;
@@ -63,9 +108,9 @@ onMounted(() => {
   top: 0;
   left: 0;
   z-index: -1;
-  background: linear-gradient(45deg, #1e3c72, #2a5298, #1e3c72);
-  background-size: 400% 400%;
-  animation: gradientAnimation 10s infinite alternate;
+  background: linear-gradient(120deg, #1e3c72, #2a5298, #1e3c72);
+  background-size: 300% 300%;
+  animation: gradientAnimation 15s infinite alternate;
 }
 
 /* 🔹 Gradient Animation */
@@ -79,94 +124,21 @@ onMounted(() => {
 }
 
 /* 🔹 Dark Mode */
-.dark-mode .animated-background {
-  background: linear-gradient(45deg, #0f2027, #203a43, #2c5364);
-  animation: gradientAnimation 10s infinite alternate;
-}
-
-.dark-mode {
-  background: #121212;
-  color: white;
-}
-
-.dark-mode .app-header,
-.dark-mode .footer {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-}
-
-/* 🔹 Light Mode */
 body {
+  background: #121212; /* Ensures dark mode works */
+  color: white;
+  font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
-  font-family: 'Arial', sans-serif;
-  background: white;
-  color: #121212;
-  transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
-.light-mode .app-header,
-.light-mode .footer {
-  background: rgba(255, 255, 255, 0.85);
-  color: #121212;
+/* 🔹 Make Sure Content is Visible */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+  z-index: 2;
 }
 
-/* 🔹 Header Styling */
-.app-header {
-  width: 100vw;
-  text-align: center;
-  padding: 20px;
-  background: rgba(0, 0, 0, 0.85);
-  color: white;
-}
-
-/* 🔹 Footer */
-.footer {
-  width: 100vw;
-  background: rgba(0, 0, 0, 0.85);
-  color: white;
-  text-align: center;
-  padding: 15px;
-  margin-top: auto;
-}
-
-.footer a {
-  color: #f8f8f8;
-  text-decoration: none;
-  margin: 0 15px;
-  transition: color 0.3s;
-}
-
-.light-mode .footer a {
-  color: #121212;
-}
-
-.light-mode .footer a:hover {
-  color: #1db7ff;
-}
-
-/* 🔹 Button Styling */
-button {
-  background: #121212;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  cursor: pointer;
-  transition: background 0.3s, color 0.3s;
-}
-
-button:hover {
-  background: #333;
-}
-
-/* Light Mode Button */
-.light-mode button {
-  background: white;
-  color: #121212;
-  border: 1px solid #121212;
-}
-
-.light-mode button:hover {
-  background: #f0f0f0;
-}
 </style>

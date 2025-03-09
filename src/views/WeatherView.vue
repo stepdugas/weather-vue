@@ -1,32 +1,24 @@
 <template>
-<h1>Weather View</h1>
-<weather-component></weather-component>
-
+  <div class="weather-view">
+    <h1>Weather</h1>
+    <WeatherComponent />
+  </div>
 </template>
 
-
-
-
 <script>
-import WeatherComponent from '@/components/WeatherComponent.vue'
+import WeatherComponent from '@/components/WeatherComponent.vue';
 
 export default {
   name: 'WeatherView',
   components: {
-    WeatherComponent
-  }
-}
-
-
+    WeatherComponent,
+  },
+};
 </script>
 
-
-
-
-
-
 <style>
-
-
-
+.weather-view {
+  text-align: center;
+  padding: 20px;
+}
 </style>
